@@ -1,0 +1,44 @@
+# Prozesssteuerung 
+
+Camera + Erkennung + Aktor 
+
+Ablauf 
+
+Loop 1 bis n (Magazingröße)
+- Motoraktor: Karte von Stapel vereinzeln
+- Aufnahme Kamerabild 
+- Erkennung des Karteninhalts über KI
+- Speicherung des Karteninhalts / Position / Magazinname in Datenbank
+- Motoraktor: Karte in Magazin ausgeben
+- Motoraktor: Magazin verschieben 
+
+
+# Interface über Web UI
+
+Prozesssteuerung: Start/Stop leerer Magazine. Anzeige von Counter. Eingabe von Magazinname. 
+(Start von Position x)
+
+CSV Export
+
+
+Ansicht der Magazine / Karten
+
+(Bearbeiten der Magazine)
+
+
+# Interface über Display 
+
+Nice to have
+
+
+# Datenbankteil (Sqlite)
+
+# Offene Fragen
+
+Motortiming herausfinden 
+Timing Karte vereinzeln 
+Timing Karte in Magazin ausgeben
+Timing Magazin verschieben
+
+
+
