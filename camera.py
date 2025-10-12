@@ -18,7 +18,6 @@ class PiCameraCapture:
             main={'size': (4056, 3040), 'format': 'RGB888'},
             lores={'size': (1014, 760)},
             display='main',
-            quality=100
         )
         if show_preview:
             picam2.configure(preview_config)
@@ -42,9 +41,7 @@ class PiCameraCapture:
             'Sharpness': 1.5,
             'Contrast': 1.1,
             'Saturation': 1.0,
-            'Denoise': 0,                # Off
             'ColourGains': [1.0, 1.0],   # Neutral color gains
-            'Ev': 0,                     # Exposure compensation
         })
         sleep(1)  # Short settle before capture
         picam2.capture_file(output_path)
