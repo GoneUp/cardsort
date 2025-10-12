@@ -1,4 +1,4 @@
-from image import GeminiImageDescriber
+from image_ki import GeminiImageDescriber
 import os
 
 def main():
