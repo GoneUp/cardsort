@@ -30,7 +30,7 @@ class PiCameraCapture:
         picam2.configure(still_config)
         picam2.set_controls({
             'AnalogueGain': 1.0,         # Normal gain for good light
-            'ExposureTime': 150000,       # Short exposure for sharpness (50ms)
+            'ExposureTime': 250000,       # Short exposure for sharpness (50ms)
             'AeEnable': True,            # Enable auto exposure for normal light
             'AwbEnable': True,           # Enable auto white balance
             'AfMode': 2,                 # Continuous autofocus
