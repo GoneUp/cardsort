@@ -9,7 +9,7 @@ class PiCameraCapture:
         picam2 = Picamera2()
         # Create preview configuration (for live preview)
         preview_config = picam2.create_preview_configuration(
-            main={'size': (3024, 4032), 'format': 'RGB888'},  # High-res portrait for close-up
+            main={'size': (3024, 4032)},  # High-res portrait for close-up
             lores={'size': (756, 1008)},
             display='main'
         )
