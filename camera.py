@@ -5,7 +5,7 @@ class PiCameraCapture:
     def __init__(self, api_key=None):
         pass
 
-    def capture(self, output_path='karte.png', preview_time=2, show_preview=True):
+    def capture(self, output_path='karte.png', preview_time=5, show_preview=True):
         picam2 = Picamera2()
         # Create preview configuration (for live preview)
         preview_config = picam2.create_preview_configuration(
@@ -42,7 +42,7 @@ class PiCameraCapture:
             'Contrast': 1.1,
             'Saturation': 1.0,
         })
-        sleep(1)  # Short settle before capture
+        sleep(3)  # Short settle before capture
         picam2.capture_file(output_path)
         picam2.close()
 
