@@ -9,8 +9,8 @@ class PiCameraCapture:
         picam2 = Picamera2()
         picam2.start_preview(Preview.QTGL)
         sleep(preview_time)
-        picam2.capture_file(output_path)
         picam2.stop_preview()
+        picam2.capture_file(output_path)
 
 if __name__ == "__main__":
     cam = PiCameraCapture()
