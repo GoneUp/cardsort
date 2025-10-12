@@ -39,7 +39,7 @@ class PiCameraCapture:
             'AfMode': 1,                # auto focus
             'AfRange': 1,                # Macro focus for close-up
             'Sharpness': 1.5,
-            'Contrast': 1.1,
+            'Contrast': 5,
             'Saturation': 1.0,
         })
         sleep(1)  # Short settle before capture
