@@ -38,7 +38,7 @@ class PiCameraCapture:
             'AwbEnable': True,
             'AfMode': 1,                # auto focus
             'AfRange': 1,                # Macro focus for close-up
-            'Sharpness': 16,
+            'Sharpness': 2.5,
             'Contrast': 1.1,
             'Saturation': 1.0,
         })
