@@ -28,6 +28,8 @@ class PiCameraCapture:
             picam2.stop()
         # Switch to still configuration for capture
         picam2.configure(still_config)
+        picam2.start()
+        # Set controls after starting camera for reliable manual exposure
         picam2.set_controls({
             'AnalogueGain': 2.0,         # Lower gain for less noise/sharper text
             'ExposureTime': 200000,      # Shorter exposure for sharpness (200ms)
@@ -36,7 +38,6 @@ class PiCameraCapture:
             'AfMode': 1,                 # Single autofocus for sharpness
             'AfRange': 1,                # Macro focus for close-up
         })
-        picam2.start()
         sleep(1)  # Short settle before capture
         picam2.capture_file(output_path)
         picam2.close()
