@@ -9,7 +9,7 @@ class PiCameraCapture:
         picam2 = Picamera2()
         # Create preview configuration (for live preview)
         preview_config = picam2.create_preview_configuration(
-            main={'size': (1080, 1920)},
+            main={'size': (1080, 1920), 'format': 'XRGB8888'},
             lores={'size': (480, 640)},
             display='main'
         )
