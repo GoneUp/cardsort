@@ -27,10 +27,10 @@ class PiCameraCapture:
         # Switch to still configuration for capture
         picam2.configure(still_config)
         picam2.set_controls({
-            'AnalogueGain': 8.0,
-            'ExposureTime': 1000000,
-            'AeEnable': False,
-            'AwbEnable': True,
+            # 'AnalogueGain': 8.0,
+            # 'ExposureTime': 1000000,
+            # 'AeEnable': False,
+            # 'AwbEnable': True,
             'AfMode': 2,
         })
         picam2.start()
