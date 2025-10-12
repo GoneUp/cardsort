@@ -29,15 +29,15 @@ class PiCameraCapture:
         # Switch to still configuration for capture
         picam2.configure(still_config)
         picam2.set_controls({
-            'AnalogueGain': 1.0,         # Normal gain for good light
-            'ExposureTime': 250000,       # Short exposure for sharpness (50ms)
-            'AeEnable': True,            # Enable auto exposure for normal light
+            'AnalogueGain': 6.0,         # Further increased gain for more brightness
+           # 'ExposureTime': 800000,      # Longer exposure for more light (800ms)
+            'AeEnable': True,           # Manual exposure for consistency
             'AwbEnable': True,           # Enable auto white balance
             'AfMode': 2,                 # Continuous autofocus
             'AfRange': 1,                # Macro focus for close-up
         })
         picam2.start()
-        sleep(0.5)  # Short settle before capture
+        sleep(1)  # Short settle before capture
         picam2.capture_file(output_path)
         picam2.close()
 
