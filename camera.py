@@ -11,15 +11,13 @@ class PiCameraCapture:
         preview_config = picam2.create_preview_configuration(
             main={'size': (4056, 3040)}, 
             lores={'size': (1014, 760)},
-            display='main',
-            transform=Picamera2.IMAGE_ROTATE_90
+            display='main'
         )
         # Create still configuration (for capture)
         still_config = picam2.create_still_configuration(
             main={'size': (4056, 3040), 'format': 'RGB888'},
             lores={'size': (1014, 760)},
-            display='main',
-            transform=Picamera2.IMAGE_ROTATE_90
+            display='main'
         )
         if show_preview:
             picam2.configure(preview_config)
