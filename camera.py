@@ -32,7 +32,7 @@ class PiCameraCapture:
         # Set controls after starting camera for reliable manual exposure
         picam2.set_controls({
             'AnalogueGain': 1.0,         # ISO 100
-            'ExposureTime': 8000,        # 8ms shutter
+            'ExposureTime': 150000,       
             'AeEnable': False,           # Manual exposure
             'AwbMode': 3,                # greyworld (3)
             'AwbEnable': True,
