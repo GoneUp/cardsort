@@ -41,7 +41,6 @@ class PiCameraCapture:
             'Sharpness': 1.5,
             'Contrast': 1.1,
             'Saturation': 1.0,
-            'ColourGains': [1.0, 1.0],   # Neutral color gains
         })
         sleep(1)  # Short settle before capture
         picam2.capture_file(output_path)
