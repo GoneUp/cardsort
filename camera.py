@@ -7,10 +7,9 @@ class PiCameraCapture:
 
     def capture(self, output_path='/tmp/picture.jpg', preview_time=5):
         picam2 = Picamera2()
-        picam2.start_preview(Preview.QTGL)
-        sleep(preview_time)
-        picam2.stop_preview()
+        picam2.start()  # Start the camera
         picam2.capture_file(output_path)
+        picam2.close()  # Release resources
 
 if __name__ == "__main__":
     cam = PiCameraCapture()
