@@ -9,7 +9,7 @@ class PiCameraCapture:
         picam2 = Picamera2()
         # Configure camera for low light (dark conditions)
         config = picam2.create_still_configuration(
-            main={'size': (1080, 1920)},  # Portrait resolution
+            main={'size': (1080, 1920), 'format': 'RGB888'},  # Portrait + preview-compatible format
             lores={'size': (480, 640)},
             display='main'
         )
