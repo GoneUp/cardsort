@@ -14,15 +14,16 @@ class PiCameraCapture:
             display='main'
         )
         picam2.configure(config)
-        # Set best practices for low light
+        # Set best practices for low light and enable autofocus
         picam2.set_controls({
             'AnalogueGain': 8.0,         # Increase gain for sensitivity
             'ExposureTime': 1000000,     # 1 second exposure (adjust as needed)
             'AeEnable': False,           # Disable auto exposure for manual control
             'AwbEnable': True,           # Keep auto white balance
+            'AfMode': 2,                 # Enable continuous autofocus (2 = Continuous)
         })
         picam2.start()
-        sleep(preview_time)  # Allow sensor to settle
+        sleep(preview_time)  # Allow sensor to settle and autofocus
         picam2.capture_file(output_path)
         picam2.close()
 
