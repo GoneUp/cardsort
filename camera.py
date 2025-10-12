@@ -5,7 +5,7 @@ class PiCameraCapture:
     def __init__(self, api_key=None):
         pass
 
-    def capture(self, output_path='/tmp/picture.jpg', preview_time=2, show_preview=True):
+    def capture(self, output_path='/tmp/picture.jpg', preview_time=10, show_preview=True):
         picam2 = Picamera2()
         # Create preview configuration (for live preview)
         preview_config = picam2.create_preview_configuration(
