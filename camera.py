@@ -30,8 +30,8 @@ class PiCameraCapture:
         picam2.configure(still_config)
         picam2.set_controls({
             'AnalogueGain': 6.0,         # Further increased gain for more brightness
-           # 'ExposureTime': 800000,      # Longer exposure for more light (800ms)
-            'AeEnable': True,           # Manual exposure for consistency
+            'ExposureTime': 100000,      # Longer exposure for more light (800ms)
+          #  'AeEnable': True,           # Manual exposure for consistency
             'AwbEnable': True,           # Enable auto white balance
             'AfMode': 2,                 # Continuous autofocus
             'AfRange': 1,                # Macro focus for close-up
