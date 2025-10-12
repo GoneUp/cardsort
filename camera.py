@@ -5,19 +5,20 @@ class PiCameraCapture:
     def __init__(self, api_key=None):
         pass
 
-    def capture(self, output_path='/tmp/picture.jpg', preview_time=2, show_preview=True):
+    def capture(self, output_path='karte.png', preview_time=2, show_preview=True):
         picam2 = Picamera2()
         # Create preview configuration (for live preview)
         preview_config = picam2.create_preview_configuration(
-            main={'size': (3024, 4032)},  # High-res portrait for close-up
-            lores={'size': (756, 1008)},
+            main={'size': (4056, 3040)}, 
+            lores={'size': (1014, 760)},
             display='main'
         )
         # Create still configuration (for capture)
         still_config = picam2.create_still_configuration(
-            main={'size': (3024, 4032), 'format': 'RGB888'},
-            lores={'size': (756, 1008)},
-            display='main'
+            main={'size': (4056, 3040), 'format': 'RGB888'},
+            lores={'size': (1014, 760)},
+            display='main',
+            quality=100
         )
         if show_preview:
             picam2.configure(preview_config)
@@ -31,12 +32,19 @@ class PiCameraCapture:
         picam2.start()
         # Set controls after starting camera for reliable manual exposure
         picam2.set_controls({
-            'AnalogueGain': 2.0,         # Lower gain for less noise/sharper text
-            'ExposureTime': 200000,      # Shorter exposure for sharpness (200ms)
-            'AeEnable': False,           # Manual exposure for consistency
-            'AwbEnable': True,           # Enable auto white balance
-            'AfMode': 1,                 # Single autofocus for sharpness
+            'AnalogueGain': 1.0,         # ISO 100
+            'ExposureTime': 8000,        # 8ms shutter
+            'AeEnable': False,           # Manual exposure
+            'AwbMode': 3,                # greyworld (3)
+            'AwbEnable': True,
+            'AfMode': 0,                 # Manual focus
             'AfRange': 1,                # Macro focus for close-up
+            'Sharpness': 1.5,
+            'Contrast': 1.1,
+            'Saturation': 1.0,
+            'Denoise': 0,                # Off
+            'ColourGains': [1.0, 1.0],   # Neutral color gains
+            'Ev': 0,                     # Exposure compensation
         })
         sleep(1)  # Short settle before capture
         picam2.capture_file(output_path)
