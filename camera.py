@@ -11,13 +11,15 @@ class PiCameraCapture:
         preview_config = picam2.create_preview_configuration(
             main={'size': (4056, 3040)}, 
             lores={'size': (1014, 760)},
-            display='main'
+            display='main',
+            transform=Picamera2.IMAGE_ROTATE_90
         )
         # Create still configuration (for capture)
         still_config = picam2.create_still_configuration(
             main={'size': (4056, 3040), 'format': 'RGB888'},
             lores={'size': (1014, 760)},
             display='main',
+            transform=Picamera2.IMAGE_ROTATE_90
         )
         if show_preview:
             picam2.configure(preview_config)
@@ -31,14 +33,14 @@ class PiCameraCapture:
         picam2.start()
         # Set controls after starting camera for reliable manual exposure
         picam2.set_controls({
-         #   'AnalogueGain': 1.0,         # ISO 100
+          #  'AnalogueGain': 1.0,         # ISO 100
             'ExposureTime': 150000,      
             'AeEnable': False,           # Manual exposure
             'AwbMode': 2,                # Indoor illumination
             'AwbEnable': True,
-            'AfMode': 1,                # auto focus
+            'AfMode': 1,               
             'AfRange': 1,                # Macro focus for close-up
-            'Sharpness': 2.5,
+            'Sharpness': 1.5,
             'Contrast': 1.1,
             'Saturation': 1.0,
         })
