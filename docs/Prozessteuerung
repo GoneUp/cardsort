@@ -4,6 +4,9 @@ Camera + Erkennung + Aktor
 
 Ablauf 
 
+Erstes Einschalten:
+- Fahrt auf Startposition -> Fahrt Motor Magazin bis zum Anschlag Endschalter
+
 Loop 1 bis n (Magazingröße)
 - Motoraktor: Karte von Stapel vereinzeln
 - Aufnahme Kamerabild 
@@ -16,6 +19,15 @@ Nach dem Loop:
 - Magazin in Startposition nach oben schieben
 - Ausgabe CSV
 - Upload CSV Bilder
+
+# Safety
+
+- Wenn keine Karten mehr vorhanden sind, sollten pausiert werden. --> Fortfahren von Position X oder Ende --> Normales Prozessende
+Erkennung mittels Kamera oder Sensor
+
+- "Softer" Stop: Speicherung Position, Weiterfahrt oder Ende möglich
+
+- "Harter" Stop (Stromverlust etc): Fahrt auf Startposition 
 
 
 # Interface über Web UI

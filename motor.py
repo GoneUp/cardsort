@@ -17,7 +17,6 @@ class MotorController:
         self.z_step = z_step
         self.z_dir = z_dir
         self.en = en
-        GPIO.setmode(GPIO.BCM)
         GPIO.setup([self.x_step, self.x_dir, self.z_step, self.z_dir, self.en], GPIO.OUT)
         GPIO.output(self.en, GPIO.LOW)  # Enable drivers
 
