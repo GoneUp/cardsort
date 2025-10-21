@@ -8,9 +8,14 @@ Loop 1 bis n (Magazingröße)
 - Motoraktor: Karte von Stapel vereinzeln
 - Aufnahme Kamerabild 
 - Erkennung des Karteninhalts über KI
-- Speicherung des Karteninhalts / Position / Magazinname in Datenbank
+- Speicherung des Karteninhalts / Position / Magazinname in Liste
 - Motoraktor: Karte in Magazin ausgeben
-- Motoraktor: Magazin verschieben 
+- Motoraktor: Magazin verschieben (außer beim letzen)
+
+Nach dem Loop:
+- Magazin in Startposition nach oben schieben
+- Ausgabe CSV
+- Upload CSV Bilder
 
 
 # Interface über Web UI

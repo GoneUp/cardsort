@@ -1,56 +1,49 @@
-import os
-import requests
+from gemini_request import GeminiImageDescriber
+from carddata import CardData
+import re
 
-class GeminiImageDescriber:
-    def __init__(self, api_key=None):
-        self.api_key = api_key or os.getenv('GEMINI_API_KEY')
-        if not self.api_key:
-            raise ValueError("Gemini API key must be provided via argument or GEMINI_API_KEY env variable.")
-        # Updated endpoint as per official documentation
-        self.api_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+class CardRecognizer:
+    def __init__(self):
+        self.prompt = """
+        Wir benötigen einen CSV-Eintrag für eine Sammelkarte. 
+        Basierern sollte es auf dem Bild der Karte, du kannst aber auch weitere Informationen aus deinem Wissen oder dem Internet hinzuziehen, um die Felder bestmöglich auszufüllen.
 
-    def describe_image(self, image_path, prompt="Describe this image."):
-        with open(image_path, "rb") as img_file:
-            img_bytes = img_file.read()
-        # Determine mime type based on file extension
-        ext = os.path.splitext(image_path)[1].lower()
-        if ext == ".png":
-            mime_type = "image/png"
-        else:
-            mime_type = "image/jpeg"
-        img_b64 = self._to_base64(img_bytes)
-        data = {
-            "contents": [
-                {
-                    "parts": [
-                        {"text": prompt},
-                        {
-                            "inlineData": {
-                                "mimeType": mime_type,
-                                "data": img_b64
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
-        headers = {"Content-Type": "application/json"}
-        params = {"key": self.api_key}
-        response = requests.post(self.api_url, json=data, headers=headers, params=params)
-        response.raise_for_status()
-        result = response.json()
-        # Defensive: check for candidates and structure
-        try:
-            return result["candidates"][0]["content"]["parts"][0]["text"]
-        except (KeyError, IndexError):
-            raise RuntimeError(f"Unexpected API response: {result}")
+        Der Eintrag sollte folgendes Format haben:
+        Kartenname;Edition;Kartennummer;Sprache;Verlag;Erscheinungsjahr;Region;Seltenheit;Kartentyp;Subtyp;Farbe;Spezialeffekte;Limitierung;Autogramm;Memorabilia;Zustand;Marktwert
 
-    @staticmethod
-    def _to_base64(binary_data):
-        import base64
-        return base64.b64encode(binary_data).decode("utf-8")
+        Hinweise zu den einzelnen Feldern:
+        - Kartenname: Der offizielle Name der Karte.
+        - Edition: Die Serie oder das Set, zu dem die Karte gehört.
+        - Kartennummer: Die Nummer der Karte innerhalb der Edition. Wenn nicht vorhanden, dann versuche die Kartenummer aus deinem Wissen oder dem Internet (ebay oder cardmarket) zu ermitteln. Wenn die Kartennummer einen Schrägstrich enthält, dann ist sie eine Limiterungsnummer und keine Kartennummer. Ignoriere solche Nummern.
+        - Sprache: Die Sprache, in der die Karte gedruckt ist.
+        - Verlag: Der Herausgeber der Karte.
+        - Erscheinungsjahr: Das Jahr, in dem die Karte veröffentlicht wurde. Wenn nicht vorhanden, dann versuche das Erscheinungsjahr aus deinem Wissen oder dem Internet (ebay oder cardmarket) zu ermitteln, mit Hilfe des Kartennamen und der Edition.
+        - Region: Das geografische Gebiet, in dem die Karte hauptsächlich verwendet wird.
+        - Seltenheit: Die Seltenheitsstufe der Karte (z.B. häufig, selten, ultra-selten).
+        - Kartentyp: Die Kategorie der Karte (z.B Kreatur, Zauber, Land).
+        - Subtyp: Eine spezifischere Klassifikation innerhalb des Kartentyps.
+        - Farbe: Die Farbe(n) der Karte (z.B. Rot, Blau, Mehrfarbig).
+        - Spezialeffekte: Besondere Merkmale wie Hologramm, Glitzer, etc.
+        - Limitierung: Ob die Karte limitiert ist (z.B. Promo, Sonderedition). Wenn vorhanden, gebe die Nummer der Limitierung in Klammern an. Zum Beispiel "Promo (23/100)".
+        - Autogramm: Ob die Karte ein Autogramm eines Künstlers oder Spielers hat.
+        - Memorabilia: Ob die Karte ein Stück von etwas Echtem (z.B. Stoff von einem Kostüm) enthält.
+        - Zustand: Der physische Zustand der Karte (z.B. Neu, Sehr gut, Gut, Akzeptabel). Achte auf Beschädigungen wie Kratzer, Knicke, Abnutzung.
+        - Marktwert: Der aktuelle geschätzte Marktwert der Karte basierend auf Verkaufsdaten auf Plattformen wie eBay, TCGPlayer, Cardmarket, etc. Gib den Wert mit Währung an.
+
+        Bitte fülle Felder aus, bei denen du unsicher bist, mit "unbekannt" aus. 
+        Geben nur den CSV-Eintrag zurück, ohne zusätzliche Erklärungen oder Text.
+        """
+        self.describer = GeminiImageDescriber()
+    def recognize(self, image_path):
+        description = self.describer.describe_image(image_path, prompt=self.prompt)
+        # Parse CSV string into CardData
+        fields = re.split(r';', description.strip())
+        # Pad missing fields with 'unbekannt'
+        while len(fields) < 17:
+            fields.append('unbekannt')
+        return CardData(image_path, *fields[:17])
 
 # Example usage:
-# describer = GeminiImageDescriber()
-# description = describer.describe_image("samples/test.jpg", prompt="Describe the game card in detail.")
-# print(description)
+# recognizer = CardRecognizer()
+# card = recognizer.recognize('samples/test.jpg')
+# print(card)

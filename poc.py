@@ -4,6 +4,7 @@ import time
 # Pin configuration
 X_STEP = 17
 X_DIR = 27
+
 Z_STEP = 24
 Z_DIR = 25
 EN = 4
