@@ -30,12 +30,13 @@ class CardRecognizer:
         - Zustand: Der physische Zustand der Karte (z.B. Neu, Sehr gut, Gut, Akzeptabel). Achte auf Beschädigungen wie Kratzer, Knicke, Abnutzung.
         - Marktwert: Der aktuelle geschätzte Marktwert der Karte basierend auf Verkaufsdaten auf Plattformen wie eBay, TCGPlayer, Cardmarket, etc. Gib den Wert mit Währung an.
 
-        Bitte fülle Felder aus, bei denen du unsicher bist, mit "unbekannt" aus. 
-        Geben nur den CSV-Eintrag zurück, ohne zusätzliche Erklärungen oder Text.
+        Bitte fülle Felder aus, bei denen du unsicher bist oder keine Information hast, mit "unbekannt" aus. 
+        Geben nur den CSV-Eintrag zurück, ohne zusätzliche Erklärungen oder Text. Gib nicht das definierte CSV-Format zurück, nur den CSV-Eintrag.
         """
         self.describer = GeminiImageDescriber()
     def recognize(self, image_path):
         description = self.describer.describe_image(image_path, prompt=self.prompt)
+        print("GeminiImageDescriber: Return: " + str(description))
         # Parse CSV string into CardData
         fields = re.split(r';', description.strip())
         # Pad missing fields with 'unbekannt'

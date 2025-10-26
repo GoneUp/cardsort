@@ -1,6 +1,7 @@
 from fastapi import FastAPI, WebSocket, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from pydantic import BaseModel
 from typing import List, Optional
 import asyncio
 from process_manager import ProcessManager
@@ -49,14 +50,17 @@ async def websocket_endpoint(websocket: WebSocket):
         if websocket in active_connections:
             active_connections.remove(websocket)
 
+from pydantic import BaseModel
+
+class StartProcessRequest(BaseModel):
+    magazin_name: str
+
 @app.post("/process/start")
-async def start_process(magazin_name: str, start_index: Optional[int] = 1, home_magazine: Optional[bool] = False):
+async def start_process(request: StartProcessRequest):
     """Start the card processing"""
     try:
         process_manager.start_process(
-            magazin_name=magazin_name,
-            start_index=start_index,
-            home_magazine=home_magazine
+            magazin_name=request.magazin_name
         )
         return {"status": "started"}
     except RuntimeError as e:

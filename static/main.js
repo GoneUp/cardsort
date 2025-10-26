@@ -18,7 +18,7 @@ function connectWebSocket() {
 function updateStatus(status) {
     document.getElementById('position').textContent = status.current_position;
     document.getElementById('magazine').textContent = status.magazin_name || '-';
-    document.getElementById('status').textContent = status.running ? 'Running' : 'Stopped';
+    document.getElementById('status').textContent = status.running ? t('status.running') : t('status.stopped');
     document.getElementById('totalCards').textContent = status.total_cards_processed;
     document.getElementById('currentRunCards').textContent = status.current_run_cards;
     
@@ -49,8 +49,6 @@ document.getElementById('startForm').addEventListener('submit', async function(e
     e.preventDefault();
     
     const magazinName = document.getElementById('magazinName').value;
-    const startPosition = parseInt(document.getElementById('startPosition').value);
-    const homeMagazine = document.getElementById('homeMagazine').checked;
     
     try {
         const response = await fetch('/process/start', {
@@ -59,18 +57,16 @@ document.getElementById('startForm').addEventListener('submit', async function(e
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                magazin_name: magazinName,
-                start_index: startPosition,
-                home_magazine: homeMagazine
+                magazin_name: magazinName
             })
         });
         
         if (!response.ok) {
             const error = await response.json();
-            alert(`Error: ${error.detail}`);
+            alert(`${t('messages.startError')}: ${error.detail}`);
         }
     } catch (error) {
-        alert('Failed to start process: ' + error);
+        alert(t('messages.startError') + ': ' + error);
     }
 });
 
@@ -82,19 +78,19 @@ document.getElementById('stopBtn').addEventListener('click', async function() {
             body: JSON.stringify({ emergency: false })
         });
     } catch (error) {
-        alert('Failed to stop process: ' + error);
+        alert(t('messages.stopError') + ': ' + error);
     }
 });
 
 document.getElementById('emergencyBtn').addEventListener('click', async function() {
-    if (confirm('Are you sure? This will immediately stop all motors!')) {
+    if (confirm(t('messages.confirmEmergency'))) {
         try {
             await fetch('/process/stop', {
                 method: 'POST',
                 body: JSON.stringify({ emergency: true })
             });
         } catch (error) {
-            alert('Failed to emergency stop: ' + error);
+            alert(t('messages.emergencyError') + ': ' + error);
         }
     }
 });

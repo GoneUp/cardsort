@@ -1,0 +1,65 @@
+let translations = {};
+let currentLanguage = localStorage.getItem('language') || 'de'; // Default to German
+
+// Load translations
+async function loadTranslations() {
+    try {
+        const response = await fetch('/static/translations.json');
+        translations = await response.json();
+        await setLanguage(currentLanguage);
+    } catch (error) {
+        console.error('Failed to load translations:', error);
+    }
+}
+
+// Set language and update UI
+async function setLanguage(lang) {
+    if (!translations[lang]) {
+        console.error(`Language ${lang} not available`);
+        return;
+    }
+    
+    currentLanguage = lang;
+    localStorage.setItem('language', lang);
+    
+    // Update all elements with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        const translation = getNestedTranslation(translations[lang], key);
+        if (translation) {
+            if (element.tagName === 'INPUT' && element.type === 'submit') {
+                element.value = translation;
+            } else {
+                element.textContent = translation;
+            }
+        }
+    });
+    
+    // Update the page title
+    document.title = translations[lang].title;
+    
+    // Update button states in language selector
+    document.querySelectorAll('.btn-group button').forEach(button => {
+        const buttonLang = button.getAttribute('onclick').match(/'(.+)'/)[1];
+        if (buttonLang === lang) {
+            button.classList.remove('btn-outline-primary');
+            button.classList.add('btn-primary');
+        } else {
+            button.classList.remove('btn-primary');
+            button.classList.add('btn-outline-primary');
+        }
+    });
+}
+
+// Helper to get nested translation keys (e.g., "status.currentPosition")
+function getNestedTranslation(obj, path) {
+    return path.split('.').reduce((p, c) => p && p[c], obj);
+}
+
+// Get translation for a key
+function t(key) {
+    return getNestedTranslation(translations[currentLanguage], key);
+}
+
+// Initialize translations
+loadTranslations();

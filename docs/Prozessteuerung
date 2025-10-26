@@ -35,8 +35,8 @@ Erkennung mittels Kamera oder Sensor
 Prozesssteuerung: 
 - Eingabe von Magazinname
 - Start leerer Magazine
-- Start von Position x 
 - Stop des Prozesses (muss immer möglich sein)
+- Restart des Prozesses nach einem Stop (nicht not-aus stop, normal)
   
 - Anzeige der aktuellen Position
 

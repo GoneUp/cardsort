@@ -26,17 +26,27 @@ class ProcessManager:
         self._controller: Optional[ProcessController] = None
         self._all_cards: List[CardDataExtended] = []
         self._current_run_start: Optional[float] = None
+        self._initial_home_done = False  # Track if initial homing has been done
     
-    def start_process(self, magazin_name: str, start_index: int = 1, home_magazine: bool = False) -> None:
+    def start_process(self, magazin_name: str) -> None:
         """Start the processing with given parameters"""
         # Initialize controller if needed
         if not self._controller:
             gpio.setmode(gpio.BCM)
             self._controller = ProcessController()
-        
+
         # Check if already running
         if self._controller._thread and self._controller._thread.is_alive():
             raise RuntimeError("Process already running")
+
+        # Perform initial homing if not done yet
+        if not self._initial_home_done:
+            self._controller.move_magazine_to_home()
+            self._initial_home_done = True
+            start_index = 1  # After homing, always start from beginning
+        else:
+            # Continue from where we left off
+            start_index = self._controller.current_position + 1
         
         def on_card_processed(card: CardData, position: int):
             # Store extended card data when card is processed
@@ -54,13 +64,14 @@ class ProcessManager:
         return self._controller.start_async(
             magazin_name=magazin_name,
             start_index=start_index,
-            home_magazine=home_magazine
+            home_magazine=False  # Never automatically home the magazine
         )
     
     def stop_process(self, emergency: bool = False) -> None:
         """Stop the current process"""
         if self._controller:
             self._controller.stop(emergency=emergency)
+            self._current_run_start = None  # Reset run timer when stopping
     
     def get_status(self) -> dict:
         """Get current process status including statistics"""
@@ -82,19 +93,24 @@ class ProcessManager:
                 if card.processed_at >= self._current_run_start
             )
         
+        is_running = self._controller._thread and self._controller._thread.is_alive()
+        current_run_time = 0
+        if is_running and self._current_run_start:
+            current_run_time = time.time() - self._current_run_start
+            
         return {
-            "running": self._controller._thread and self._controller._thread.is_alive(),
+            "running": is_running,
             "current_position": self._controller.current_position,
             "magazin_name": self._controller.magazin_name,
             "total_cards_processed": len(self._all_cards),
             "current_run_cards": current_run_cards,
-            "current_run_time": time.time() - (self._current_run_start or time.time())
+            "current_run_time": current_run_time
         }
     
     def export_all_cards_csv(self, path: str = None) -> str:
         """Export all processed cards to a single CSV file"""
         if not path:
-            path = os.path.join(os.getcwd(), f"all_cards_{int(time.time())}.csv")
+            path = os.path.join(os.getcwd(), "csv", f"all_cards_{int(time.time())}.csv")
         
         # Group cards by magazine for writing
         by_magazine: Dict[str, List[tuple[int, CardData]]] = {}

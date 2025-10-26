@@ -1,0 +1,64 @@
+{
+    "en": {
+        "title": "Card Sort Control",
+        "processControl": "Process Control",
+        "magazineName": "Magazine Name",
+        "startPosition": "Start Position",
+        "homeMagazine": "Home Magazine First",
+        "startProcess": "Start Process",
+        "stopProcess": "Stop Process",
+        "emergencyStop": "Emergency Stop",
+        "status": {
+            "title": "Status",
+            "currentPosition": "Current Position",
+            "magazine": "Magazine",
+            "status": "Status",
+            "currentRun": "Current Run",
+            "cards": "Cards",
+            "time": "Time",
+            "totalCardsProcessed": "Total Cards Processed",
+            "running": "Running",
+            "stopped": "Stopped",
+            "exportAll": "Export All Cards"
+        },
+        "messages": {
+            "confirmEmergency": "Are you sure? This will immediately stop all motors!",
+            "startError": "Failed to start process",
+            "stopError": "Failed to stop process",
+            "emergencyError": "Failed to emergency stop",
+            "exportError": "Failed to export CSV",
+            "exportSuccess": "CSV exported to: {path}"
+        }
+    },
+    "de": {
+        "title": "Kartensortierer Steuerung",
+        "processControl": "Prozesssteuerung",
+        "magazineName": "Magazinname",
+        "startPosition": "Startposition",
+        "homeMagazine": "Magazin zuerst auf Startposition",
+        "startProcess": "Prozess starten",
+        "stopProcess": "Prozess stoppen",
+        "emergencyStop": "Notaus",
+        "status": {
+            "title": "Status",
+            "currentPosition": "Aktuelle Position",
+            "magazine": "Magazin",
+            "status": "Status",
+            "currentRun": "Aktueller Durchlauf",
+            "cards": "Karten",
+            "time": "Zeit",
+            "totalCardsProcessed": "Gesamt verarbeitete Karten",
+            "running": "Läuft",
+            "stopped": "Gestoppt",
+            "exportAll": "Alle Karten exportieren"
+        },
+        "messages": {
+            "confirmEmergency": "Sind Sie sicher? Dies stoppt sofort alle Motoren!",
+            "startError": "Fehler beim Starten des Prozesses",
+            "stopError": "Fehler beim Stoppen des Prozesses",
+            "emergencyError": "Fehler beim Notaus",
+            "exportError": "Fehler beim CSV-Export",
+            "exportSuccess": "CSV exportiert nach: {path}"
+        }
+    }
+}

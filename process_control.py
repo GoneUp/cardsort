@@ -107,13 +107,19 @@ class ProcessController:
                 self.motor.move_motor(Motor.MotorMagazin, Direction.Forward, self.magazine_move_steps)
                 # update current position after magazine move
                 self.current_position = i + 1
-        # Move magazine back to starting position after loop
-        self.motor.move_motor(Motor.MotorMagazin, Direction.Backward, self.magazine_return_steps)
-        self.motor.cleanup()
+            print(f"Karte gelesen: {card}")
+            
+        
+        if i == self.magazine_size:
+            # Move magazine back to starting position after loop, but only if we finished the complete magazine
+            print("Move: Return to start")
+            self.motor.move_motor(Motor.MotorMagazin, Direction.Backward, self.magazine_return_steps)
+
+        # self.motor.cleanup()
         # Save results to CSV using helper
         timestamp = int(time.time())
-        csv_filename = f"{timestamp}_Magazin.csv"
-        csv_path = os.path.join(os.getcwd(), csv_filename)
+        csv_filename = f"single_magazin_{timestamp}.csv"
+        csv_path = os.path.join(os.getcwd(), "csv", csv_filename)
         write_carddata_csv(results, csv_path, magazin_name=self.magazin_name, start_index=start_index)
         print(f"Prozess abgeschlossen. Ergebnisse gespeichert in {csv_path}")
 
