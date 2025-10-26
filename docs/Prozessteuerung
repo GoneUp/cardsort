@@ -18,7 +18,7 @@ Loop 1 bis n (Magazingröße)
 Nach dem Loop:
 - Magazin in Startposition nach oben schieben
 - Ausgabe CSV
-- Upload CSV Bilder
+- Upload CSV / Bilder
 
 # Safety
 
@@ -32,15 +32,16 @@ Erkennung mittels Kamera oder Sensor
 
 # Interface über Web UI
 
-Prozesssteuerung: Start/Stop leerer Magazine. Anzeige von Counter. Eingabe von Magazinname. 
-(Start von Position x)
+Prozesssteuerung: 
+- Eingabe von Magazinname
+- Start leerer Magazine
+- Start von Position x 
+- Stop des Prozesses (muss immer möglich sein)
+  
+- Anzeige der aktuellen Position
 
-CSV Export
-
-
-Ansicht der Magazine / Karten
-
-(Bearbeiten der Magazine)
+- CSV Export der Datenbank ausführen
+- Ansicht der Magazine / Karten in der Datenbank
 
 
 # Interface über Display 

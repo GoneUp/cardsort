@@ -46,7 +46,7 @@ class ProcessController:
     def run(self, home_magazine=False):
         if home_magazine:
             self.move_magazine_to_home()
-            
+
         results = []
         for i in range(1, self.magazine_size + 1):
             # 1. Motor: Separate card
@@ -108,3 +108,5 @@ if __name__ == "__main__":
     GPIO.setmode(GPIO.BCM)
     controller = ProcessController()
     controller.run(home_magazine=True)
+    controller.run(home_magazine=False)
+
