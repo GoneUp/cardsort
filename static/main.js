@@ -18,7 +18,21 @@ function connectWebSocket() {
 function updateStatus(status) {
     document.getElementById('position').textContent = status.current_position;
     document.getElementById('magazine').textContent = status.magazin_name || '-';
-    document.getElementById('status').textContent = status.running ? t('status.running') : t('status.stopped');
+    
+    // Display status with proper translations
+    let statusText = t('status.stopped') || 'Stopped';
+    if (status.running) {
+        statusText = t('status.running') || 'Running';
+    }
+    document.getElementById('status').textContent = statusText;
+    
+    // Show notification if present
+    if (status.notification) {
+        if (status.notification === 'run_finished') {
+            showNotification(t('messages.runFinished') || 'Run Finished!', 'success');
+        }
+    }
+    
     document.getElementById('totalCards').textContent = status.total_cards_processed;
     document.getElementById('currentRunCards').textContent = status.current_run_cards;
     
@@ -41,6 +55,83 @@ function updateStatus(status) {
         startBtn.disabled = false;
         stopBtn.disabled = true;
         emergencyBtn.disabled = true;
+    }
+}
+
+// Show notification modal that requires acknowledgment
+function showNotification(message, type = 'info') {
+    // Create backdrop
+    const backdrop = document.createElement('div');
+    backdrop.style.position = 'fixed';
+    backdrop.style.top = '0';
+    backdrop.style.left = '0';
+    backdrop.style.width = '100%';
+    backdrop.style.height = '100%';
+    backdrop.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    backdrop.style.zIndex = '9998';
+    
+    // Create modal container
+    const modal = document.createElement('div');
+    modal.style.position = 'fixed';
+    modal.style.top = '50%';
+    modal.style.left = '50%';
+    modal.style.transform = 'translate(-50%, -50%)';
+    modal.style.zIndex = '9999';
+    modal.style.backgroundColor = 'white';
+    modal.style.borderRadius = '8px';
+    modal.style.padding = '40px';
+    modal.style.minWidth = '500px';
+    modal.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
+    modal.style.textAlign = 'center';
+    
+    // Create message content
+    const content = document.createElement('div');
+    content.style.marginBottom = '30px';
+    content.style.fontSize = '18px';
+    content.style.lineHeight = '1.6';
+    content.innerHTML = message;
+    
+    // Create acknowledge button
+    const button = document.createElement('button');
+    button.className = 'btn btn-primary btn-lg';
+    button.textContent = 'OK';
+    button.style.minWidth = '120px';
+    button.onclick = () => {
+        modal.remove();
+        backdrop.remove();
+    };
+    
+    modal.appendChild(content);
+    modal.appendChild(button);
+    document.body.appendChild(backdrop);
+    document.body.appendChild(modal);
+    
+    // Play notification sound
+    playNotificationSound();
+}
+
+// Play a simple notification sound using Web Audio API
+function playNotificationSound() {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Set sound parameters - a pleasant "ding" sound
+        oscillator.frequency.value = 800; // Hz
+        oscillator.type = 'sine';
+        
+        // Create volume envelope
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+    } catch (error) {
+        console.log('Could not play notification sound:', error);
     }
 }
 

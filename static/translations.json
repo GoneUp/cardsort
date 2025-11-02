@@ -19,6 +19,7 @@
             "totalCardsProcessed": "Total Cards Processed",
             "running": "Running",
             "stopped": "Stopped",
+            "finished": "Finished",
             "exportAll": "Export All Cards"
         },
         "messages": {
@@ -27,7 +28,8 @@
             "stopError": "Failed to stop process",
             "emergencyError": "Failed to emergency stop",
             "exportError": "Failed to export CSV",
-            "exportSuccess": "CSV exported to: {path}"
+            "exportSuccess": "CSV exported to: {path}",
+            "runFinished": "Run finished! All cards processed.<br>Please insert a new magazine to continue."
         }
     },
     "de": {
@@ -50,6 +52,7 @@
             "totalCardsProcessed": "Gesamt verarbeitete Karten",
             "running": "Läuft",
             "stopped": "Gestoppt",
+            "finished": "Abgeschlossen",
             "exportAll": "Alle Karten exportieren"
         },
         "messages": {
@@ -58,7 +61,8 @@
             "stopError": "Fehler beim Stoppen des Prozesses",
             "emergencyError": "Fehler beim Notaus",
             "exportError": "Fehler beim CSV-Export",
-            "exportSuccess": "CSV exportiert nach: {path}"
+            "exportSuccess": "CSV exportiert nach: {path}",
+            "runFinished": "Prozess abgeschlossen! Alle Karten verarbeitet.<br>Bitte legen Sie ein neues Magazin ein, um fortzufahren."
         }
     }
 }

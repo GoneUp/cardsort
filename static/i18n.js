@@ -58,8 +58,29 @@ function getNestedTranslation(obj, path) {
 
 // Get translation for a key
 function t(key) {
-    return getNestedTranslation(translations[currentLanguage], key);
+    const result = getNestedTranslation(translations[currentLanguage], key);
+    if (!result) {
+        console.warn(`Translation not found for key: ${key}`);
+        return key;  // Return the key as fallback
+    }
+    return result;
 }
 
-// Initialize translations
-loadTranslations();
+// Initialize translations - load them synchronously by waiting
+let translationsReady = false;
+
+async function initTranslations() {
+    try {
+        const response = await fetch('/static/translations.json');
+        translations = await response.json();
+        translationsReady = true;
+        await setLanguage(currentLanguage);
+        console.log('Translations loaded successfully');
+    } catch (error) {
+        console.error('Failed to load translations:', error);
+        translationsReady = false;
+    }
+}
+
+// Start loading translations immediately
+initTranslations();

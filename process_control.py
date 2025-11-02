@@ -8,11 +8,10 @@ from csv_out import write_carddata_csv
 from gpio_manager import gpio  # Use our GPIO manager instead of direct RPi.GPIO
 
 # === Default Configurable Constants ===
-DEFAULT_MAGAZINE_SIZE = 70
+DEFAULT_MAGAZINE_SIZE = 5
 DEFAULT_SEPARATE_STEPS = 200
 DEFAULT_OUTPUT_STEPS = 200
 DEFAULT_MAGAZINE_MOVE_STEPS = 100
-DEFAULT_MAGAZINE_RETURN_STEPS = 7000
 DEFAULT_IMAGE_DIR = "images"
 DEFAULT_MAGAZIN_NAME = 'A'
 DEFAULT_MOTOR_PINS = {'X_STEP': 17, 'X_DIR': 27, 'Z_STEP': 24, 'Z_DIR': 25, 'EN': 4}
@@ -20,12 +19,11 @@ DEFAULT_HOME_SENSOR_PIN = 21
 # =====================================
 
 class ProcessController:
-    def __init__(self, magazine_size=DEFAULT_MAGAZINE_SIZE, separate_steps=DEFAULT_SEPARATE_STEPS, output_steps=DEFAULT_OUTPUT_STEPS, magazine_move_steps=DEFAULT_MAGAZINE_MOVE_STEPS, magazine_return_steps=DEFAULT_MAGAZINE_RETURN_STEPS, image_dir=DEFAULT_IMAGE_DIR, magazin_name=DEFAULT_MAGAZIN_NAME, motor_pins=None, home_sensor_pin=DEFAULT_HOME_SENSOR_PIN):
+    def __init__(self, magazine_size=DEFAULT_MAGAZINE_SIZE, separate_steps=DEFAULT_SEPARATE_STEPS, output_steps=DEFAULT_OUTPUT_STEPS, magazine_move_steps=DEFAULT_MAGAZINE_MOVE_STEPS, image_dir=DEFAULT_IMAGE_DIR, magazin_name=DEFAULT_MAGAZIN_NAME, motor_pins=None, home_sensor_pin=DEFAULT_HOME_SENSOR_PIN):
         self.magazine_size = magazine_size
         self.separate_steps = separate_steps
         self.output_steps = output_steps
         self.magazine_move_steps = magazine_move_steps
-        self.magazine_return_steps = magazine_return_steps
         self.image_dir = image_dir
         self.magazin_name = magazin_name
         self.home_sensor_pin = home_sensor_pin
@@ -43,6 +41,7 @@ class ProcessController:
         self.on_card_processed = None  # Callback(card: CardData, position: int)
 
     def move_magazine_to_home(self, step_delay=0.005, max_steps=10000):
+        print("Moving Magazin to home")
         steps = 0
         while gpio.input(self.home_sensor_pin) == gpio.LOW and steps < max_steps:
             self.motor.move_motor(Motor.MotorMagazin, Direction.Backward, 1, step_delay)
@@ -92,6 +91,8 @@ class ProcessController:
             # 4. Save CardData object for later CSV export
             # attach the image_path to the CardData so csv writer can use the filename
             card.image_path = image_path
+            card.magazin_name = magazin_name
+            card.magazin_index = i
             results.append(card)
             self.current_position = i
             # Notify about processed card
@@ -113,14 +114,14 @@ class ProcessController:
         if i == self.magazine_size:
             # Move magazine back to starting position after loop, but only if we finished the complete magazine
             print("Move: Return to start")
-            self.motor.move_motor(Motor.MotorMagazin, Direction.Backward, self.magazine_return_steps)
+            self.move_magazine_to_home()
 
         # self.motor.cleanup()
         # Save results to CSV using helper
         timestamp = int(time.time())
         csv_filename = f"single_magazin_{timestamp}.csv"
         csv_path = os.path.join(os.getcwd(), "csv", csv_filename)
-        write_carddata_csv(results, csv_path, magazin_name=self.magazin_name, start_index=start_index)
+        write_carddata_csv(results, csv_path)
         print(f"Prozess abgeschlossen. Ergebnisse gespeichert in {csv_path}")
 
     # --- Async control ---
