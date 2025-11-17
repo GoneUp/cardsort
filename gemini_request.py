@@ -7,7 +7,7 @@ class GeminiImageDescriber:
         if not self.api_key:
             raise ValueError("Gemini API key must be provided via argument or GEMINI_API_KEY env variable.")
         # Updated endpoint as per official documentation
-        self.api_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+        self.api_url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 
     def describe_image(self, image_path, prompt="Describe this image."):
         with open(image_path, "rb") as img_file:
