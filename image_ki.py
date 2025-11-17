@@ -27,11 +27,12 @@ class CardRecognizer:
         - Limitierung: Ob die Karte limitiert ist (z.B. Promo, Sonderedition). Wenn vorhanden, gebe die Nummer der Limitierung in Klammern an. Zum Beispiel "Promo (23/100)".
         - Autogramm: Ob die Karte ein Autogramm eines Künstlers oder Spielers hat.
         - Memorabilia: Ob die Karte ein Stück von etwas Echtem (z.B. Stoff von einem Kostüm) enthält.
-        - Zustand: Der physische Zustand der Karte (z.B. Neu, Sehr gut, Gut, Akzeptabel). Achte auf Beschädigungen wie Kratzer, Knicke, Abnutzung.
-        - Marktwert: Der aktuelle geschätzte Marktwert der Karte basierend auf Verkaufsdaten auf Plattformen wie eBay, TCGPlayer, Cardmarket, etc. Gib den Wert mit Währung an.
+        - Zustand: Der physische Zustand der Karte (Nutze diese Skala: Perfekt, Booster Frisch, Leichte Gebrauchspuren, Sichtbare Abnutzung, Starke Abnutzung, Beschädigt, Kaputt). Achte auf Beschädigungen wie Kratzer, Knicke, Abnutzung.
+        - Marktwert: Der aktuelle geschätzte Marktwert der Karte basierend auf Verkaufsdaten auf Plattformen wie eBay, TCGPlayer, Cardmarket, etc. Beziehe den Zustand der Karte in deine Bewertung mit ein, ziehe pro Stufe 14,28%% ab. Gib den Wert mit Währung an. 
 
         Bitte fülle Felder aus, bei denen du unsicher bist oder keine Information hast, mit "unbekannt" aus. 
-        Geben nur den CSV-Eintrag zurück, ohne zusätzliche Erklärungen oder Text. Gib nicht das definierte CSV-Format zurück, nur den CSV-Eintrag.
+        Geben nur den CSV-Eintrag zurück, ohne zusätzliche Erklärungen oder Text. Gib nicht das definierte CSV-Format zurück, nur den CSV-Eintrag. 
+        Verwende in den Felder keine Semikolons. 
         """
         self.describer = GeminiImageDescriber()
     def recognize(self, image_path):

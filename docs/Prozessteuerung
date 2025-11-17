@@ -58,9 +58,19 @@ Timing Karte vereinzeln
 Timing Karte in Magazin ausgeben
 Timing Magazin verschieben
 
+--
+Internes netzteil mit 5v / 12v gekauft!!
+
+Schaltbild entwickeln!!!!!
+
+
+Testlauf auf Raspi 
+
+
 
 # TODOs
 
 Cleanup der Bilder einbauen
+Bildupload an Webserver
 
-
+Fehler: notaus geht nicht bei auf startposition fahren 

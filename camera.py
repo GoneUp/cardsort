@@ -94,19 +94,8 @@ try:
             # Switch to still configuration for capture
             picam2.configure(still_config)
             picam2.start()
-            # Set controls after starting camera for reliable manual exposure
-            picam2.set_controls({
-                'ExposureTime': 150000,      
-                'AeEnable': False,           # Manual exposure
-                'AwbMode': 2,                # Indoor illumination
-                'AwbEnable': True,
-                'AfMode': 1,               
-                'AfRange': 1,                # Macro focus for close-up
-                'Sharpness': 1.5,
-                'Contrast': 1.1,
-                'Saturation': 1.0,
-            })
-            sleep(3)  # Short settle before capture
+            picam2.autofocus_cycle()
+            sleep(2)  # Short settle before capture
             picam2.capture_file(output_path)
             picam2.close()
 except ImportError:
